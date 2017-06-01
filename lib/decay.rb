@@ -1,5 +1,3 @@
+require "decay/enum"
+require "decay/enumerated_type"
 require "decay/version"
-
-module Decay
-  # Your code goes here...
-end
