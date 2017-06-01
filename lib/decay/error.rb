@@ -5,5 +5,8 @@ module Decay
 
     class UnspecifiedKey < Error
     end
+
+    class UnknownEnumValue < Error
+    end
   end
 end

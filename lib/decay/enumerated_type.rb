@@ -5,7 +5,15 @@ module Decay
       @value = nil
     end
 
-    attr_accessor :value
+    attr_reader :value
+
+    def value=(new_value)
+      if @registry.key?(new_value)
+        @value = new_value
+      else
+        raise Error::UnknownEnumValue
+      end
+    end
 
     def []=(key, value)
       @registry[key] = value

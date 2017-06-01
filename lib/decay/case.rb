@@ -17,7 +17,7 @@ module Decay
     end
 
     def else(&block)
-      @enums.each do |key, value|
+      @enums.keys.each do |key|
         if !@whens.key?(key)
           @whens[key] = block
         end
@@ -31,7 +31,11 @@ module Decay
         raise Error::UnspecifiedKey
       end
 
-      @whens[@key].call(@enums[@key])
+      if @whens.key?(@key)
+        @whens[@key].call(@enums[@key])
+      else
+        raise Error::UnknownEnumValue
+      end
     end
   end
 end
