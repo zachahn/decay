@@ -20,6 +20,10 @@ Metrics/LineLength:
   IgnoredPatterns:
     - !ruby/regexp /^\s*#/
 
+Metrics/MethodLength:
+  Exclude:
+    - test/**/*_test.rb
+
 Style/AsciiComments:
   Enabled: false
 
@@ -40,10 +44,6 @@ Style/IfUnlessModifier:
 
 Style/NegatedIf:
   Enabled: false
-
-Style/NumericLiterals:
-  Exclude:
-    - db/schema.rb
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
