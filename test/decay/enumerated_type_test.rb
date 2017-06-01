@@ -30,6 +30,14 @@ class EnumeratedTypeTest < TestCase
     end
   end
 
+  def test_frozen_class
+    etc = Decay::EnumeratedType.create(:foo, :bar)
+
+    assert_raises(Decay::Error::CantDefineEnumAtRuntime) do
+      etc[:baz] = :baz
+    end
+  end
+
   def test_case
     etc = Decay::EnumeratedType.create(:foo, :bar)
 

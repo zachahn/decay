@@ -8,5 +8,8 @@ module Decay
 
     class UnknownEnumValue < Error
     end
+
+    class CantDefineEnumAtRuntime < Error
+    end
   end
 end

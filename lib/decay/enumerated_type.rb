@@ -18,7 +18,11 @@ module Decay
       end
 
       def []=(key, value)
-        registry[key] = new(value)
+        if registry.frozen?
+          raise Error::CantDefineEnumAtRuntime
+        else
+          registry[key] = new(value)
+        end
       end
 
       def [](key)
