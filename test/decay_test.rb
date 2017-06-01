@@ -6,6 +6,8 @@ class DecayTest < TestCase
     et[:phone] = "phone"
     et[:home] = "home"
 
+    et.value = :phone
+
     assert_raises(Decay::Error) do
       et.case
         .when(:phone) {}
