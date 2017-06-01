@@ -2,24 +2,22 @@ require "test_helper"
 
 class DecayTest < TestCase
   def test_standalone_usage
-    et = Decay::EnumeratedType.new
-    et[:phone] = "phone"
-    et[:home] = "home"
+    et_class = Decay::EnumeratedType.create(:phone, :home)
 
-    et.value = :phone
+    value = et_class[:phone]
 
     assert_raises(Decay::Error) do
-      et.case
+      value.case
         .when(:phone) {}
         .result
     end
 
-    et.case
+    value.case
       .when(:phone) {}
       .when(:home) {}
       .result
 
-    et.case
+    value.case
       .when(:phone) {}
       .else {}
       .result

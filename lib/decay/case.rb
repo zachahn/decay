@@ -1,13 +1,13 @@
 module Decay
   class Case
-    def initialize(enums, key)
-      @enums = enums
+    def initialize(enum_class, member)
+      @enum_class = enum_class
+      @member = member
       @whens = {}
-      @key = key
     end
 
     def when(key, &block)
-      if @enums.keys.include?(key)
+      if @enum_class.values.include?(key)
         @whens[key] = block
       else
         raise Error::UnknownKey
@@ -17,7 +17,7 @@ module Decay
     end
 
     def else(&block)
-      @enums.keys.each do |key|
+      @enum_class.values.each do |key|
         if !@whens.key?(key)
           @whens[key] = block
         end
@@ -27,12 +27,12 @@ module Decay
     end
 
     def result
-      if @whens.keys.size != @enums.keys.size
+      if @whens.keys.size != @enum_class.values.size
         raise Error::UnspecifiedKey
       end
 
-      if @whens.key?(@key)
-        @whens[@key].call(@enums[@key])
+      if @whens.key?(@member.value)
+        @whens[@member.value].call(@member)
       else
         raise Error::UnknownEnumValue
       end

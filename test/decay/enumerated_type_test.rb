@@ -1,23 +1,38 @@
 require "test_helper"
 
 class EnumeratedTypeTest < TestCase
-  def test_value_must_be_defined
-    et = Decay::EnumeratedType.new
-    et[:foo] = :foo
+  def test_create_creates_class_with_named_values
+    etc = Decay::EnumeratedType.create(:foo, :bar)
 
-    assert_raises(Decay::Error::UnknownEnumValue) do
-      et.case
-        .when(:foo) {}
-        .result
+    assert_kind_of(Class, etc)
+    assert_equal(%i[foo bar], etc.members.map(&:value))
+  end
+
+  def test_create_creates_class_with_set_values
+    etc = Decay::EnumeratedType.create(foo: "foo", bar: "bar")
+
+    assert_equal(%w[foo bar], etc.members.map(&:value))
+  end
+
+  def test_created_class_members_are_kind_of_itself
+    etc = Decay::EnumeratedType.create(:foo, :bar)
+
+    assert_kind_of(etc, etc.members.first)
+  end
+
+  def test_created_class_square_brackets
+    etc = Decay::EnumeratedType.create(:foo, :bar)
+
+    assert_kind_of(etc, etc[:foo])
+
+    assert_raises(Decay::Error::UnknownKey) do
+      etc[:baz]
     end
   end
 
-  def test_value_must_be_an_enum
-    et = Decay::EnumeratedType.new
-    et[:foo] = :foo
+  def test_case
+    etc = Decay::EnumeratedType.create(:foo, :bar)
 
-    assert_raises(Decay::Error::UnknownEnumValue) do
-      et.value = :bar
-    end
+    etc[:foo].case
   end
 end
