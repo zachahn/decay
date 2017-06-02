@@ -8,7 +8,12 @@ module Decay
       # rubocop:disable Metrics/MethodLength
       def enum(**rules)
         rules.each do |enum_name, enum_values|
-          enumerated_type_class = ::Decay::EnumeratedType.create(*enum_values)
+          enumerated_type_class =
+            if enum_values.is_a?(Hash)
+              ::Decay::EnumeratedType.create(**enum_values)
+            else
+              ::Decay::EnumeratedType.create(*enum_values)
+            end
 
           const_set(enum_name.to_s.upcase, enumerated_type_class)
 
