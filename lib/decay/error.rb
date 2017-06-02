@@ -3,7 +3,7 @@ module Decay
     class UnknownKey < Error
     end
 
-    class UnspecifiedKey < Error
+    class UndefinedCase < Error
     end
 
     class UnknownEnumValue < Error
