@@ -23,8 +23,6 @@ class ActiveEnumTest < TestCase
   end
 
   def test_query
-    skip
-
     post = Post.new
     post.status = :draft
 
@@ -33,8 +31,6 @@ class ActiveEnumTest < TestCase
   end
 
   def test_set_bang
-    skip
-
     post = Post.new
 
     post.draft!
@@ -45,8 +41,6 @@ class ActiveEnumTest < TestCase
   end
 
   def test_scopes
-    skip
-
     assert_kind_of(ActiveRecord::Relation, Post.draft)
     assert_kind_of(ActiveRecord::Relation, Post.published)
   end
