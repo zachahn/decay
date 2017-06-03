@@ -26,6 +26,8 @@ module Decay
       def []=(key, value)
         if registry.frozen?
           raise Error::CantDefineEnumAtRuntime
+        elsif registry.key?(key)
+          raise Error::DuplicateEnum
         else
           registry[key] = new(value)
         end

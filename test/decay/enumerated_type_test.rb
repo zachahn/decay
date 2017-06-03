@@ -67,6 +67,12 @@ class EnumeratedTypeTest < TestCase
     end
   end
 
+  def test_duplicate_enum_error
+    assert_raises(Decay::Error::DuplicateEnum) do
+      Decay::EnumeratedType.create(:foo, :foo)
+    end
+  end
+
   def test_case
     etc = Decay::EnumeratedType.create(:foo, :bar)
 

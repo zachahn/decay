@@ -14,5 +14,8 @@ module Decay
 
     class EnumConflict < Error
     end
+
+    class DuplicateEnum < Error
+    end
   end
 end
