@@ -10,24 +10,16 @@ module Decay
             ::Decay::EnumeratedType.create(*enum_values)
           end
 
-        const_set(enum_name.to_s.upcase, enumerated_type_class)
+        meta = Metaprogramming.new(
+          class: self,
+          enumerated_type: enumerated_type_class,
+          enumerated_type_name: enum_name
+        )
 
-        define_method(enum_name) do
-          instance_variable_get("@#{enum_name}")
-        end
+        meta.define_enumerated_type
 
-        define_method("#{enum_name}=") do |new_value|
-          value =
-            if new_value.respond_to?(:to_sym)
-              new_value.to_sym
-            else
-              new_value
-            end
-
-          enum = enumerated_type_class[value]
-
-          instance_variable_set("@#{enum_name}", enum)
-        end
+        meta.define_getter
+        meta.define_setter
       end
     end
     # rubocop:enable Metrics/MethodLength
