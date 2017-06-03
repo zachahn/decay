@@ -30,6 +30,9 @@ Style/AsciiComments:
 Style/CaseEquality:
   Enabled: false
 
+Style/Documentation:
+  Enabled: false
+
 Style/EmptyMethod:
   Enabled: false
 
