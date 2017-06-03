@@ -2,7 +2,7 @@ require "test_helper"
 
 class EnumTest < TestCase
   class Misc
-    include Decay::Enum
+    extend Decay::Enum
 
     enum green_eggs: %i[fox box house mouse] + [nil]
 

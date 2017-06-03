@@ -24,7 +24,7 @@ class DecayTest < TestCase
   end
 
   class Meta
-    include Decay::Enum
+    extend Decay::Enum
 
     enum model: %i[zoolander hansel]
   end
