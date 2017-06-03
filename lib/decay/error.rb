@@ -11,5 +11,8 @@ module Decay
 
     class CantDefineEnumAtRuntime < Error
     end
+
+    class EnumConflict < Error
+    end
   end
 end

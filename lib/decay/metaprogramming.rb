@@ -13,6 +13,7 @@ module Decay
     def define_getter
       enumerated_type_name = @enumerated_type_name
 
+      assert_instance_conflict_free(enumerated_type_name)
       @klass.send(:define_method, enumerated_type_name) do
         instance_variable_get("@#{enumerated_type_name}")
       end
@@ -22,6 +23,7 @@ module Decay
       enumerated_type = @enumerated_type
       enumerated_type_name = @enumerated_type_name
 
+      assert_instance_conflict_free("#{enumerated_type_name}=")
       @klass.send(:define_method, "#{enumerated_type_name}=") do |new_value|
         value =
           if new_value.respond_to?(:to_sym)
@@ -40,6 +42,7 @@ module Decay
       enumerated_type_name = @enumerated_type_name
 
       @enumerated_type.each do |key, value|
+        assert_instance_conflict_free("#{key}!")
         @klass.send(:define_method, "#{key}!") do
           instance_variable_set("@#{enumerated_type_name}", value)
         end
@@ -50,6 +53,7 @@ module Decay
       enumerated_type_name = @enumerated_type_name
 
       @enumerated_type.each do |key, value|
+        assert_instance_conflict_free("#{key}?")
         @klass.send(:define_method, "#{key}?") do
           instance_variable_get("@#{enumerated_type_name}") == value
         end
@@ -61,8 +65,33 @@ module Decay
 
       @enumerated_type.each do |key, value|
         if key
+          assert_scope_conflict_free(key)
           @klass.scope key, -> { where(enumerated_type_name => value.value) }
         end
+      end
+    end
+
+    private
+
+    def assert_instance_conflict_free(method_name)
+      if @klass.instance_methods.include?(method_name.to_sym)
+        previously_defined_method = @klass.instance_method(method_name)
+        filename, lineno = previously_defined_method.source_location
+
+        raise Error::EnumConflict, \
+          "Instance method `#{method_name}` was previously defined " \
+          "in #{filename}:#{lineno}"
+      end
+    end
+
+    def assert_scope_conflict_free(method_name)
+      if @klass.methods.include?(method_name.to_sym)
+        previously_defined_method = @klass.method(method_name)
+        filename, lineno = previously_defined_method.source_location
+
+        raise Error::EnumConflict, \
+          "Scope `#{method_name}` was previously defined " \
+          "in #{filename}:#{lineno}"
       end
     end
   end
