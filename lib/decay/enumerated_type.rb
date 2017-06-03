@@ -1,15 +1,21 @@
 module Decay
   class EnumeratedType
     class << self
-      def create(*named_values, **key_value_pairs)
+      def create(*definitions)
         type = Class.new(self)
 
-        named_values.each do |value|
-          type[value.to_sym] = value.to_sym
-        end
-
-        key_value_pairs.each do |key, value|
-          type[key.to_sym] = value
+        definitions.each do |definition|
+          if definition.respond_to?(:keys)
+            definition.each do |key, value|
+              type[normalized(key)] = value
+            end
+          elsif definition.respond_to?(:each)
+            definition.each do |value|
+              type[normalized(value)] = normalized(value)
+            end
+          else
+            type[normalized(definition)] = normalized(definition)
+          end
         end
 
         type.freeze
@@ -50,6 +56,14 @@ module Decay
 
       def registry
         @registry ||= {}
+      end
+
+      def normalized(value)
+        if value.respond_to?(:to_sym)
+          value.to_sym
+        else
+          value
+        end
       end
     end
 

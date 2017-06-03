@@ -20,6 +20,16 @@ class EnumeratedTypeTest < TestCase
     assert_kind_of(etc, etc.members.first)
   end
 
+  def test_nil_enum
+    foo_type = Decay::EnumeratedType.create(:foo, nil)
+    bar_type = Decay::EnumeratedType.create(bar: "woah", nil => nil)
+    baz_type = Decay::EnumeratedType.create(nil, baz: :qux)
+
+    assert_equal([:foo, nil], foo_type.values)
+    assert_equal([:bar, nil], bar_type.values)
+    assert_equal([nil, :baz], baz_type.values)
+  end
+
   def test_created_class_square_brackets
     etc = Decay::EnumeratedType.create(:foo, :bar)
 

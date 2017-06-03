@@ -4,7 +4,7 @@ class EnumTest < TestCase
   class Misc
     include Decay::Enum
 
-    enum green_eggs: %i[fox box house mouse]
+    enum green_eggs: %i[fox box house mouse] + [nil]
 
     enum villain: \
       {
@@ -39,5 +39,13 @@ class EnumTest < TestCase
     misc.villain = :doctor_evil
     misc.villain = :kim_jong_un
     assert_kind_of(Misc::VILLAIN, misc.villain)
+  end
+
+  def test_set_nil
+    misc = Misc.new
+
+    misc.green_eggs = nil
+
+    misc.green_eggs
   end
 end

@@ -22,7 +22,14 @@ module Decay
           end
 
           define_method("#{enum_name}=") do |new_value|
-            enum = enumerated_type_class[new_value.to_sym]
+            value =
+              if new_value.respond_to?(:to_sym)
+                new_value.to_sym
+              else
+                new_value
+              end
+
+            enum = enumerated_type_class[value]
 
             instance_variable_set("@#{enum_name}", enum)
           end
