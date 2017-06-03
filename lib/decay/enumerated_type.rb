@@ -52,6 +52,16 @@ module Decay
         super
       end
 
+      def each
+        if !block_given?
+          return enum_for(:each)
+        end
+
+        registry.each do |key, value|
+          yield key, value
+        end
+      end
+
       private
 
       def registry
