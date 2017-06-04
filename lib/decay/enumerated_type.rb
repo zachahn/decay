@@ -45,6 +45,14 @@ module Decay
         registry.keys
       end
 
+      def key_for(value)
+        if value.kind_of?(EnumeratedType)
+          registry.invert[value]
+        else
+          registry.map { |key, value| [key, value.value] }.to_h.invert[value]
+        end
+      end
+
       def members
         registry.values
       end

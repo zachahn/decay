@@ -8,8 +8,10 @@ module Decay
     def cast(value)
       if value.is_a?(Decay::EnumeratedType)
         value
+      elsif value.respond_to?(:to_sym)
+        @enum[value.to_sym]
       else
-        deserialize(value)
+        @enum[value]
       end
     end
 
@@ -24,11 +26,7 @@ module Decay
 
     # Database => Ruby
     def deserialize(value)
-      if value.respond_to?(:to_sym)
-        @enum[value.to_sym]
-      else
-        @enum[value]
-      end
+      @enum[@enum.key_for(value)]
     end
   end
 end

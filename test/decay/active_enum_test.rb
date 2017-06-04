@@ -5,10 +5,9 @@ class ActiveEnumTest < TestCase
     extend Decay::ActiveEnum
 
     active_enum status: %i[draft published]
+    attribute :status, Decay::ActiveEnumAttribute.new(enum: STATUS)
 
     active_enum author: { zach: "Zach Ahn" }
-
-    attribute :status, Decay::ActiveEnumAttribute.new(enum: STATUS)
     attribute :author, Decay::ActiveEnumAttribute.new(enum: AUTHOR)
   end
 
@@ -75,5 +74,8 @@ class ActiveEnumTest < TestCase
       )
 
     assert_equal([{ "author" => "Zach Ahn" }], result.to_hash)
+
+    read_post = Post.find(post.id)
+    assert_equal(Post::AUTHOR[:zach], read_post.author)
   end
 end
