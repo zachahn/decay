@@ -6,7 +6,10 @@ class ActiveEnumTest < TestCase
 
     active_enum status: %i[draft published]
 
+    active_enum author: { zach: "Zach Ahn" }
+
     attribute :status, Decay::ActiveEnumAttribute.new(enum: STATUS)
+    attribute :author, Decay::ActiveEnumAttribute.new(enum: AUTHOR)
   end
 
   def setup
@@ -20,6 +23,7 @@ class ActiveEnumTest < TestCase
     ActiveRecord::Schema.define(version: 2) do
       create_table :posts do |t|
         t.string :status
+        t.string :author
       end
     end
   end
@@ -57,5 +61,19 @@ class ActiveEnumTest < TestCase
     read_post = Post.find(post.id)
 
     assert_kind_of(Decay::EnumeratedType, read_post.status)
+  end
+
+  def test_correct_value_gets_saved
+    post = Post.new
+    post.status = :draft
+    post.author = :zach
+    post.save!
+
+    result =
+      ActiveRecord::Base.connection.exec_query(
+        "SELECT author FROM posts",
+      )
+
+    assert_equal([{ "author" => "Zach Ahn" }], result.to_hash)
   end
 end
