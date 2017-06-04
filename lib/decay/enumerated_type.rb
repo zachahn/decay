@@ -46,10 +46,11 @@ module Decay
       end
 
       def key_for(value)
-        if value.kind_of?(EnumeratedType)
+        if value.is_a?(EnumeratedType)
           registry.invert[value]
         else
-          registry.map { |key, value| [key, value.value] }.to_h.invert[value]
+          raw_value = registry.map { |k, v| [k, v.value] }.to_h
+          raw_value.invert[value]
         end
       end
 

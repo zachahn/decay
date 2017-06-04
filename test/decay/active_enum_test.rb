@@ -16,7 +16,7 @@ class ActiveEnumTest < TestCase
 
     ActiveRecord::Base.establish_connection(
       adapter: "sqlite3",
-      database: ":memory:",
+      database: ":memory:"
     )
 
     ActiveRecord::Schema.define(version: 2) do
@@ -70,7 +70,7 @@ class ActiveEnumTest < TestCase
 
     result =
       ActiveRecord::Base.connection.exec_query(
-        "SELECT author FROM posts",
+        "SELECT author FROM posts"
       )
 
     assert_equal([{ "author" => "Zach Ahn" }], result.to_hash)

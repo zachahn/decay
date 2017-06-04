@@ -42,11 +42,13 @@ module Decay
       enumerated_type_name = @enumerated_type_name
 
       @enumerated_type.each do |key, value|
-        if !key.nil?
-          assert_instance_conflict_free("#{key}!")
-          @klass.send(:define_method, "#{key}!") do
-            instance_variable_set("@#{enumerated_type_name}", value)
-          end
+        if key.nil?
+          next
+        end
+
+        assert_instance_conflict_free("#{key}!")
+        @klass.send(:define_method, "#{key}!") do
+          instance_variable_set("@#{enumerated_type_name}", value)
         end
       end
     end
@@ -55,11 +57,13 @@ module Decay
       enumerated_type_name = @enumerated_type_name
 
       @enumerated_type.each do |key, value|
-        if !key.nil?
-          assert_instance_conflict_free("#{key}?")
-          @klass.send(:define_method, "#{key}?") do
-            instance_variable_get("@#{enumerated_type_name}") == value
-          end
+        if key.nil?
+          next
+        end
+
+        assert_instance_conflict_free("#{key}?")
+        @klass.send(:define_method, "#{key}?") do
+          instance_variable_get("@#{enumerated_type_name}") == value
         end
       end
     end
@@ -67,12 +71,14 @@ module Decay
     def define_active_record_bang_setters
       enumerated_type_name = @enumerated_type_name
 
-      @enumerated_type.each do |key, value|
-        if !key.nil?
-          assert_instance_conflict_free("#{key}!")
-          @klass.send(:define_method, "#{key}!") do
-            send("#{enumerated_type_name}=", key)
-          end
+      @enumerated_type.each do |key, _value|
+        if key.nil?
+          next
+        end
+
+        assert_instance_conflict_free("#{key}!")
+        @klass.send(:define_method, "#{key}!") do
+          send("#{enumerated_type_name}=", key)
         end
       end
     end
@@ -81,11 +87,13 @@ module Decay
       enumerated_type_name = @enumerated_type_name
 
       @enumerated_type.each do |key, value|
-        if !key.nil?
-          assert_instance_conflict_free("#{key}?")
-          @klass.send(:define_method, "#{key}?") do
-            send(enumerated_type_name) == value
-          end
+        if key.nil?
+          next
+        end
+
+        assert_instance_conflict_free("#{key}?")
+        @klass.send(:define_method, "#{key}?") do
+          send(enumerated_type_name) == value
         end
       end
     end
