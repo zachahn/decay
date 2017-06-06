@@ -23,6 +23,7 @@ class MetaprogrammingTest < TestCase
         extend Decay::ActiveEnum
 
         define_singleton_method(:scope) { |*| }
+        define_singleton_method(:attribute) { |*| }
 
         define_singleton_method(:haha) {}
 

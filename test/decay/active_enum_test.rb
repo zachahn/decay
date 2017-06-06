@@ -5,10 +5,8 @@ class ActiveEnumTest < TestCase
     extend Decay::ActiveEnum
 
     active_enum status: %i[draft published]
-    attribute :status, Decay::ActiveEnumAttribute.new(enum: STATUS)
 
     active_enum author: { zach: "Zach Ahn" }
-    attribute :author, Decay::ActiveEnumAttribute.new(enum: AUTHOR)
   end
 
   def setup

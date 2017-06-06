@@ -17,6 +17,7 @@ module Decay
 
         meta.define_enumerated_type
 
+        meta.define_active_record_attribute
         meta.define_active_record_bang_setters
         meta.define_active_record_question_getters
 

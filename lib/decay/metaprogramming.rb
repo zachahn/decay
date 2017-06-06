@@ -68,6 +68,11 @@ module Decay
       end
     end
 
+    def define_active_record_attribute
+      @klass.attribute @enumerated_type_name, \
+        Decay::ActiveEnumAttribute.new(enum: @enumerated_type)
+    end
+
     def define_active_record_bang_setters
       enumerated_type_name = @enumerated_type_name
 
