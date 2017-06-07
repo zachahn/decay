@@ -10,8 +10,8 @@ module Decay
               type[normalized(key)] = value
             end
           elsif definition.respond_to?(:each)
-            definition.each do |value|
-              type[normalized(value)] = normalized(value)
+            definition.each do |key|
+              type[normalized(key)] = normalized(key)
             end
           else
             type[normalized(definition)] = normalized(definition)
@@ -41,7 +41,7 @@ module Decay
         end
       end
 
-      def values
+      def keys
         registry.keys
       end
 

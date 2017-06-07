@@ -44,9 +44,9 @@ class EnumeratedTypeTest < TestCase
     bar_type = Decay::EnumeratedType.create(bar: "woah", nil => nil)
     baz_type = Decay::EnumeratedType.create(nil, baz: :qux)
 
-    assert_equal([:foo, nil], foo_type.values)
-    assert_equal([:bar, nil], bar_type.values)
-    assert_equal([nil, :baz], baz_type.values)
+    assert_equal([:foo, nil], foo_type.keys)
+    assert_equal([:bar, nil], bar_type.keys)
+    assert_equal([nil, :baz], baz_type.keys)
   end
 
   def test_created_class_square_brackets

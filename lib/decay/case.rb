@@ -6,9 +6,9 @@ module Decay
       @whens = {}
     end
 
-    def when(value, &block)
-      if @enum_class.values.include?(value)
-        @whens[value] = block
+    def when(key, &block)
+      if @enum_class.keys.include?(key)
+        @whens[key] = block
       else
         raise Error::UnknownKey
       end
@@ -17,9 +17,9 @@ module Decay
     end
 
     def else(&block)
-      @enum_class.values.each do |value|
-        if !@whens.key?(value)
-          @whens[value] = block
+      @enum_class.keys.each do |key|
+        if !@whens.key?(key)
+          @whens[key] = block
         end
       end
 
@@ -27,7 +27,7 @@ module Decay
     end
 
     def result
-      if @whens.keys.size != @enum_class.values.size
+      if @whens.keys.size != @enum_class.keys.size
         raise Error::UndefinedCase
       end
 
