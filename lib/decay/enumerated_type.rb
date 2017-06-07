@@ -29,7 +29,7 @@ module Decay
         elsif registry.key?(key)
           raise Error::DuplicateEnum
         else
-          registry[key] = new(value)
+          registry[key] = new(key, value)
         end
       end
 
@@ -88,10 +88,12 @@ module Decay
       end
     end
 
-    def initialize(value)
+    def initialize(key, value)
+      @key = key
       @value = value
     end
 
+    attr_reader :key
     attr_reader :value
 
     def case
