@@ -6,9 +6,6 @@ module Decay
     class UndefinedCase < Error
     end
 
-    class UnknownEnumValue < Error
-    end
-
     class CantDefineEnumAtRuntime < Error
     end
 

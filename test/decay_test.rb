@@ -6,7 +6,7 @@ class DecayTest < TestCase
 
     value = et_class[:phone]
 
-    assert_raises(Decay::Error) do
+    assert_raises(Decay::Error::UndefinedCase) do
       value.case
         .when(:phone) {}
         .result
@@ -34,7 +34,7 @@ class DecayTest < TestCase
 
     meta.model = :zoolander
 
-    assert_raises(Decay::Error) do
+    assert_raises(Decay::Error::UndefinedCase) do
       meta.model.case
         .when(:zoolander) {}
         .result

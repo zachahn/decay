@@ -25,9 +25,10 @@ module Decay
 
       def []=(key, value)
         if registry.frozen?
-          raise Error::CantDefineEnumAtRuntime
+          raise Error::CantDefineEnumAtRuntime, \
+            "New values can only be created on Enum creation"
         elsif registry.key?(key)
-          raise Error::DuplicateEnum
+          raise Error::DuplicateEnum, "Attempted to re-define `#{key.inspect}'"
         else
           registry[key] = new(key, value)
         end
@@ -37,7 +38,10 @@ module Decay
         if registry.key?(key)
           registry[key]
         else
-          raise Error::UnknownKey
+          valid_keys = registry.keys.map(&:inspect).map { |str| "`#{str}'" }
+          raise Error::UnknownKey,
+            "Attempted to search for unknown key `#{key.inspect}'. " \
+            "Valid options are #{valid_keys.join(", ")}"
         end
       end
 

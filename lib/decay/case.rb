@@ -28,18 +28,23 @@ module Decay
 
     def result
       if @whens.keys.size != @enum_class.keys.size
-        raise Error::UndefinedCase
+        undefined_cases =
+          (@whens.keys - @enum_class.keys)
+            .map(&:inspect).map { |str| "`#{str}'" }
+
+        raise Error::UndefinedCase,
+          "Some cases aren't yet covered: #{undefined_cases.join(", ")}"
       end
 
       if @whens.key?(@member.key)
         @whens[@member.key].call(@member)
       else
-        raise Error::UnknownEnumValue
+        raise_unknown_key
       end
     end
 
     def raise_unknown_key
-      valid_keys = @enum_class.keys.map(&:inspect).map { |str| "`#{str}'"}
+      valid_keys = @enum_class.keys.map(&:inspect).map { |str| "`#{str}'" }
       raise Error::UnknownKey,
         "Attempted to search for unknown key `#{@member.value.inspect}'. " \
         "Valid options are #{valid_keys.join(", ")}"
