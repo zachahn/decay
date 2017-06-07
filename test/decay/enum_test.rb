@@ -46,6 +46,20 @@ class EnumTest < TestCase
 
     misc.green_eggs = nil
 
-    misc.green_eggs
+    assert_nil(misc.green_eggs.value)
+  end
+
+  def test_case
+    misc = Misc.new
+    misc.villain = :doctor_evil
+
+    result =
+      misc.villain.case
+        .when(:mugatu) { "I invented the piano necktie" }
+        .when(:doctor_evil) { "One million dollars!" }
+        .when(:kim_jong_un) { "Sometimes I feel like a plastic bag" }
+        .result
+
+    assert_equal("One million dollars!", result)
   end
 end

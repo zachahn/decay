@@ -10,7 +10,7 @@ module Decay
       if @enum_class.keys.include?(key)
         @whens[key] = block
       else
-        raise Error::UnknownKey
+        raise_unknown_key
       end
 
       self
@@ -31,11 +31,18 @@ module Decay
         raise Error::UndefinedCase
       end
 
-      if @whens.key?(@member.value)
-        @whens[@member.value].call(@member)
+      if @whens.key?(@member.key)
+        @whens[@member.key].call(@member)
       else
         raise Error::UnknownEnumValue
       end
+    end
+
+    def raise_unknown_key
+      valid_keys = @enum_class.keys.map(&:inspect).map { |str| "`#{str}'"}
+      raise Error::UnknownKey,
+        "Attempted to search for unknown key `#{@member.value.inspect}'. " \
+        "Valid options are #{valid_keys.join(", ")}"
     end
   end
 end
