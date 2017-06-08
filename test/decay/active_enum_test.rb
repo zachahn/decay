@@ -5,6 +5,8 @@ class ActiveEnumTest < TestCase
     extend Decay::ActiveEnum
 
     active_enum status: %i[draft published]
+
+    attribute :status, Decay::ActiveEnumAttribute.new(enum: STATUS)
   end
 
   def setup
@@ -34,14 +36,26 @@ class ActiveEnumTest < TestCase
     post = Post.new
 
     post.draft!
-    assert(post.draft?)
+    assert(post.draft?, "post should be draft")
 
     post.published!
-    assert(post.published?)
+    assert(post.published?, "post should be published")
   end
 
   def test_scopes
     assert_kind_of(ActiveRecord::Relation, Post.draft)
     assert_kind_of(ActiveRecord::Relation, Post.published)
+  end
+
+  def test_attributes
+    post = Post.new
+    post.status = :draft
+    post.save!
+
+    assert_kind_of(Decay::EnumeratedType, post.status)
+
+    read_post = Post.find(post.id)
+
+    assert_kind_of(Decay::EnumeratedType, read_post.status)
   end
 end
