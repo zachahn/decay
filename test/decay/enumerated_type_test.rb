@@ -14,6 +14,14 @@ class EnumeratedTypeTest < TestCase
     assert_equal(%w[foo bar], etc.members.map(&:value))
   end
 
+  def test_key_for
+    etc = Decay::EnumeratedType.create(foo: "foo", bar: :bar)
+
+    assert_equal(:foo, etc.key_for("foo"))
+    assert_equal(:bar, etc.key_for(:bar))
+    assert_equal(:bar, etc.key_for("bar"))
+  end
+
   def test_each
     etc = Decay::EnumeratedType.create(foo: "f", bar: "b")
 

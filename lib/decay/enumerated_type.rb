@@ -54,7 +54,13 @@ module Decay
           registry.invert[value]
         else
           raw_value = registry.map { |k, v| [k, v.value] }.to_h
-          raw_value.invert[value]
+          value_key = raw_value.invert
+
+          if value_key.key?(value)
+            value_key[value]
+          else
+            value_key[normalized(value)]
+          end
         end
       end
 

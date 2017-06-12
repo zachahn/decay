@@ -58,6 +58,7 @@ class ActiveEnumTest < TestCase
     read_post = Post.find(post.id)
 
     assert_kind_of(Decay::EnumeratedType, read_post.status)
+    assert_equal(:draft, read_post.status.value)
   end
 
   def test_correct_value_gets_saved
